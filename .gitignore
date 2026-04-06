@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.skill
+dist/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.pyc
