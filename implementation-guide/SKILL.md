@@ -43,7 +43,14 @@ Trigger when:
 - User says "just generate it" or "generate the full guide"
 - User provides a quick-start prompt template with all fields filled
 
-In direct mode, skip the multi-turn interview, but still ask **one consolidated clarifying message** if any critical input is missing or ambiguous (e.g., the platform name is ambiguous, or the section groupings are not obvious). Do not skip clarification entirely just because the user signaled "direct mode."
+In direct mode, skip the multi-turn interview, but still ask **one consolidated clarifying message** if any of these critical inputs are missing or ambiguous:
+
+- **Customer name** — required for the document title
+- **Platform / product** — must be unambiguous (e.g., "Okta" could mean WIC or OIG)
+- **Use cases or topic** — either a use-case document or enough detail to propose use cases
+- **Section groupings** — if not obvious from the input
+
+Do not skip clarification entirely just because the user signaled "direct mode."
 
 After clarification, generate the full document, then run the Phase 5.5 review before presenting.
 
@@ -51,13 +58,25 @@ After clarification, generate the full document, then run the Phase 5.5 review b
 
 ## Phase 1: Intake
 
-**Goal:** Get the source document.
+**Goal:** Get the use cases — from a document or from the user's topic description.
 
-If not already provided, ask:
+**If the user provides a use-case requirements document:** proceed to Phase 2 with that document.
 
-> Please paste or upload your use-case requirements document. It should list use cases with names like "Use Case 1: Employee Onboarding" or similar.
+**If the user provides a topic but no document** (e.g., "Okta SSO for Salesforce" or "Lifecycle Management for Workday"): do NOT insist on a document. Instead, propose a set of use cases based on the topic and ask the user to confirm, add, or remove. Example:
 
-Wait for the document before proceeding.
+> Based on the topic "[topic]", here are the use cases I'd suggest covering:
+>
+> 1. UC1: [Proposed use case]
+> 2. UC2: [Proposed use case]
+> ...
+>
+> Should I add, remove, or rename any of these?
+
+**If neither a document nor a clear topic is provided**, ask:
+
+> Please paste or upload your use-case requirements document, or describe the topic and platform so I can propose use cases.
+
+Wait for a response before proceeding.
 
 ## Phase 2: Analyze
 
@@ -83,7 +102,7 @@ Wait for confirmation. If changes requested, update and re-confirm.
 
 ## Phase 3: Configure
 
-**Goal:** Get product, customer, and section groupings.
+**Goal:** Get product, customer, and section groupings — then validate current platform state.
 
 Ask these questions (in guided mode, one at a time; in direct mode, extract from context and consolidate any clarifications into a single message):
 
@@ -106,6 +125,17 @@ When suggesting groupings, organize by common patterns:
 After confirming groupings:
 - If the platform is Okta OIG, read `references/okta-oig-reference.md`
 - For other platforms, read `references/research-protocol.md` and search for platform-specific capabilities before generating sections
+
+### Validate current platform state (required)
+
+**Do not generate content from training data or context alone.** Product offerings, feature names, default behaviors, and UI flows change frequently. Before writing any section:
+
+1. `web_search` for the platform's current product page and documentation home (e.g., `site:okta.com identity governance`, `site:sailpoint.com identity security`)
+2. `web_fetch` the official product/feature pages relevant to the confirmed use cases
+3. Note any discrepancies between what you know from training data and what the current documentation says — feature renames, deprecated capabilities, new features, changed defaults
+4. If a capability referenced in the use cases no longer exists or has been renamed, flag it to the user before generating that section
+
+This step prevents the most damaging class of errors: confidently describing features that have been renamed, deprecated, or restructured since your training cutoff. A guide that references a feature by its old name — or describes a flow that no longer exists — undermines the entire deliverable.
 
 ## Phase 4: Generate
 
@@ -269,7 +299,7 @@ If the user seems stuck or confused:
 
 1. **Honest, not impressive.** Capabilities are not overstated. Gaps are documented as discovery items, not papered over. This applies to every platform, not just Okta. Customers can tell when an implementation guide is selling them on something the product cannot actually do — and it permanently damages credibility.
 
-2. **Verified, not pattern-matched.** Specification URIs, version numbers, counts, dates, defaults, UI paths, and URLs are all checked against authoritative sources in the same session. Pattern-matching from training data is the primary source of factual errors in customer-facing documents.
+2. **Verified, not pattern-matched.** Specification URIs, version numbers, counts, dates, defaults, UI paths, and URLs are all checked against authoritative sources in the same session. Pattern-matching from training data is the primary source of factual errors in customer-facing documents. Product capabilities, feature names, and UI flows must be validated against current vendor documentation (Phase 3) — never assumed from potentially stale training data.
 
 3. **Use case names match the source document exactly** — including domain scope, capitalization, and spelling.
 
