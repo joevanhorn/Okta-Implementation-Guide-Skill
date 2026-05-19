@@ -1,0 +1,8 @@
+flowchart TD
+    Start([Begin])
+    subgraph Group["Inputs"]
+        A[Input A]
+        B[Input B]
+    Start --> A
+    classDef trigger fill:#e3f2fd
+    class Start trigger

@@ -1,0 +1,11 @@
+flowchart TD
+    Start([Begin])
+    Process[Do Work]
+    End([Done])
+    Start --> Process --> End
+    classDef trigger fill:#e3f2fd,stroke:#1565c0
+    classDef action fill:#e1f5fe,stroke:#0277bd
+    classDef endpoint fill:#eceff1,stroke:#546e7a
+    class Start trigger
+    class Process action
+    class End endpoint

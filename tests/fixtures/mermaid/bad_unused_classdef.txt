@@ -1,0 +1,10 @@
+flowchart TD
+    Start([Begin])
+    Process[Do Work]
+    End([Done])
+    Start --> Process --> End
+    classDef trigger fill:#e3f2fd
+    classDef unused fill:#000
+    class Start trigger
+    class Process trigger
+    class End trigger
