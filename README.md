@@ -19,6 +19,26 @@ Supports both a **guided mode** (step-by-step interview) and a **direct mode** (
 
 Includes Okta Identity Governance (OIG) domain knowledge out of the box, with a research protocol for other platforms.
 
+## What's New (May 2026)
+
+**Phase 5.5 — Fact-checking review pass.** Every document now goes through a mandatory two-pass review before delivery: URL verification (5.5.a) and post-generation fact-checking (5.5.b). The bot inventories every verifiable claim, checks it against authoritative sources, and presents findings for your approval before applying fixes.
+
+**Current-state validation.** The skill now `web_search` + `web_fetch`es vendor documentation before generating content — it won't operate on potentially stale training data. Feature renames, deprecated capabilities, and changed defaults are flagged before they end up in your deliverable.
+
+**URL verification discipline.** New reference file with domain risk classifications, known `help.okta.com` anti-patterns, and the critical rule: never extrapolate URLs from sibling pages. Every URL in the output is verified in-session.
+
+**Styled HTML template.** The output now uses a dark-navy-gradient header, CSS-counter section numbering, four callout variants (info/warn/tip/danger), navigation breadcrumbs, and refined print CSS. This replaces the previous minimal template.
+
+**Topic-only intake.** You no longer need a use-case requirements document to get started. Describe a topic ("Okta SSO for Salesforce") and the skill proposes use cases for your confirmation.
+
+**Direct mode tightened.** Direct mode now asks one consolidated clarifying question when critical inputs are missing (customer name, platform, use cases, section groupings) instead of silently assuming.
+
+**47-test validation suite.** Structural tests, mermaid validator tests, URL pattern tests, review fixture tests, and HTML template tests — all stdlib-only Python, runnable with `python3 tests/run_tests.py`.
+
+### Updating
+
+If you installed via symlink + git clone, just `git pull`. If you copied the files, re-copy the `implementation-guide/` directory and add the new `tests/` directory.
+
 ## Installation
 
 ### Claude.ai / Claude Desktop
@@ -94,13 +114,23 @@ implementation-guide/
 │   └── renderer.html                     # Standalone Markdown+Mermaid renderer
 └── references/
     ├── mermaid-standards.md              # Diagram syntax, colors, overlap prevention
-    ├── document-template.md              # Section structure, HTML template, print CSS
+    ├── document-template.md              # Section structure, styled HTML template, print CSS
+    ├── url-verification.md               # URL verification discipline and anti-patterns
+    ├── post-generation-review.md         # Phase 5.5 fact-checking procedure
+    ├── quality-checklist.md              # Pre-delivery validation checklist + mermaid validator
     ├── okta-oig-reference.md             # Okta OIG components, patterns, capabilities
-    ├── research-protocol.md              # How to research non-Okta platforms
-    └── quality-checklist.md              # Pre-delivery validation checklist
+    └── research-protocol.md              # How to research non-Okta platforms
+tests/
+├── run_tests.py                          # Test orchestrator (47 tests, stdlib only)
+├── test_skill_structure.py               # Required files, phases, principles
+├── test_mermaid_validator.py             # Mermaid syntax validation rules
+├── test_url_patterns.py                  # URL verification reference content
+├── test_review_fixtures.py              # Fact-checking categories and procedure
+├── test_html_template.py                 # Styled template structural elements
+└── fixtures/                             # Test fixtures (buggy doc, mermaid samples)
 ```
 
-Reference files are loaded on-demand — only `SKILL.md` metadata is in context until the skill triggers.
+The five "Always" reference files (`mermaid-standards`, `document-template`, `url-verification`, `post-generation-review`, `quality-checklist`) are loaded every time. Platform-specific files (`okta-oig-reference`, `research-protocol`) are loaded on demand.
 
 ## Requirements
 
