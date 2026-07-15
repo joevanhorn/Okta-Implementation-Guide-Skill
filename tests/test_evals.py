@@ -42,6 +42,22 @@ def test_every_product_file_has_a_scenario():
     assert not uncovered, f"product reference files with no eval scenario: {uncovered}"
 
 
+def test_smoke_guides_validate():
+    """Committed generation smoke guides must satisfy the skill's output contract."""
+    sys.path.insert(0, str(EVALS_DIR))
+    import validate_guide  # noqa: E402
+
+    validator = validate_guide.load_validator()
+    guides = sorted((EVALS_DIR / "smoke").glob("*-implementation-guide.md"))
+    assert guides, "no generation smoke guides found in evals/smoke/"
+    failures = {}
+    for g in guides:
+        problems = validate_guide.validate_guide(g, validator)
+        if problems:
+            failures[g.name] = problems
+    assert not failures, f"smoke guides fail the output contract: {failures}"
+
+
 def test_sample_results_grade_all_pass():
     """The committed baseline run must still grade 10/10 (guards the grader + fixtures)."""
     sys.path.insert(0, str(EVALS_DIR))

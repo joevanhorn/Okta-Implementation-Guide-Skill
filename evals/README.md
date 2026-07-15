@@ -78,6 +78,29 @@ Each scenario must pass four checks:
 - **Product currency:** an Auth0 Rules/Hooks request flags the Nov 18 2026 sunset and
   recommends migrating to Actions.
 
+## Generation smoke test
+
+The routing evals stop at Phase 3 (which reference file gets loaded). The **generation
+smoke test** goes all the way: an agent runs the skill end-to-end (Direct Mode, real
+Phase 3 current-state web validation, Phase 4 generation, Phase 5 appendices, Phase 5.5
+review) to produce a complete guide, and `validate_guide.py` checks the deliverable
+against the skill's own output contract.
+
+- **Actor step:** run the skill for a fully-specified engagement (customer, platform,
+  use cases) and save the result to `evals/smoke/<slug>-implementation-guide.md`.
+- **Checker step:** `python3 evals/validate_guide.py evals/smoke/*.md` — verifies each
+  guide has an Executive Summary, Appendices A/B/C, ≥3 sections each carrying all five
+  required elements (Use Cases Covered, overview, one `mermaid` diagram, a key-features
+  table, discovery items), one diagram per section, and that **every diagram passes the
+  repo's own `validate_mermaid`** (reused from `quality-checklist.md`).
+
+`evals/smoke/` holds three committed reference guides — Auth0 CIC, Okta Device Access,
+and Okta Access Gateway — that pass the contract and are also checked in CI
+(`test_evals.py::test_smoke_guides_validate`). They double as worked examples of the
+skill's output, including its honest-framing behavior under real generation (the Auth0
+guide surfaces the Nov 2026 Rules/Hooks sunset; Device Access states the no-Linux/no-RDP
+scope limits; Access Gateway frames OAG as a migration bridge, not a target state).
+
 ## Re-running after a change
 
 Any time you change routing logic, the portfolio map, or a product reference file:
