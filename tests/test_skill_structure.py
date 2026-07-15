@@ -14,10 +14,39 @@ REQUIRED_FILES = [
     "references/url-verification.md",
     "references/post-generation-review.md",
     "references/quality-checklist.md",
+    "references/product-portfolio-map.md",
+    "references/okta-wic-reference.md",
     "references/okta-oig-reference.md",
+    "references/okta-opa-reference.md",
+    "references/okta-itp-reference.md",
+    "references/okta-device-access-reference.md",
+    "references/okta-access-gateway-reference.md",
+    "references/auth0-cic-reference.md",
+    "references/auth0-fga-reference.md",
     "references/research-protocol.md",
     "assets/renderer.html",
 ]
+
+# Product-knowledge reference files must all follow the same four-section template
+# established by okta-oig-reference.md (the exemplar). This makes the template an
+# enforced contract so future product files stay consistent.
+PRODUCT_REFERENCE_FILES = [
+    "okta-wic-reference.md",
+    "okta-oig-reference.md",
+    "okta-opa-reference.md",
+    "okta-itp-reference.md",
+    "okta-device-access-reference.md",
+    "okta-access-gateway-reference.md",
+    "auth0-cic-reference.md",
+    "auth0-fga-reference.md",
+]
+
+# The Mermaid classes defined in mermaid-standards.md — product files must map to
+# these and not invent new ones.
+KNOWN_MERMAID_CLASSES = {
+    "trigger", "extSystem", "platform", "workflow", "decision",
+    "governance", "action", "endpoint", "danger", "audit", "notify",
+}
 
 
 def test_all_required_files_exist():
@@ -89,3 +118,48 @@ def test_honest_principle_present():
     # The "Honest, not impressive" principle should be in the Key Principles section
     assert re.search(r"honest.*not.*impressive", skill, re.IGNORECASE), \
         "SKILL.md should declare the 'Honest, not impressive' principle"
+
+
+def test_product_reference_files_follow_template():
+    """Every product reference file mirrors the four-section okta-oig-reference.md template."""
+    required_sections = [
+        "## Platform Components",
+        "Use Case Patterns",
+        "## Honest Capability Assessment",
+        "## Diagram Component Mapping",
+    ]
+    for name in PRODUCT_REFERENCE_FILES:
+        path = SKILL_DIR / "references" / name
+        assert path.exists(), f"Missing product reference file: {name}"
+        content = path.read_text()
+        for section in required_sections:
+            assert section in content, \
+                f"{name} missing required template section: {section!r}"
+
+
+def test_product_reference_files_use_known_mermaid_classes():
+    """Diagram Component Mapping tables should map to the shared Mermaid palette."""
+    for name in PRODUCT_REFERENCE_FILES:
+        content = (SKILL_DIR / "references" / name).read_text()
+        idx = content.find("## Diagram Component Mapping")
+        section = content[idx:] if idx >= 0 else ""
+        cited = set(re.findall(r"`(\w+)`", section))
+        # The mapping must draw from the shared class palette rather than inventing its own.
+        assert cited & KNOWN_MERMAID_CLASSES, \
+            f"{name} Diagram Component Mapping does not use any known Mermaid class"
+
+
+def test_portfolio_map_covers_products():
+    """The solution-mapping file should reference the product files it routes to."""
+    content = (SKILL_DIR / "references" / "product-portfolio-map.md").read_text()
+    for name in PRODUCT_REFERENCE_FILES:
+        assert name in content, \
+            f"product-portfolio-map.md does not reference {name}"
+
+
+def test_right_fit_principle_present():
+    skill = (SKILL_DIR / "SKILL.md").read_text()
+    assert re.search(r"right-fit", skill, re.IGNORECASE), \
+        "SKILL.md should declare the 'Right-fit, not one-size' presales principle"
+    assert "product-portfolio-map.md" in skill, \
+        "SKILL.md should point to the portfolio map for solution mapping"
