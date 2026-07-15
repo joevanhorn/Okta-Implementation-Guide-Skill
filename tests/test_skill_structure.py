@@ -163,3 +163,28 @@ def test_right_fit_principle_present():
         "SKILL.md should declare the 'Right-fit, not one-size' presales principle"
     assert "product-portfolio-map.md" in skill, \
         "SKILL.md should point to the portfolio map for solution mapping"
+
+
+def test_routing_targets_consistent_across_skill_and_portfolio_map():
+    """Every product file must be routable from BOTH SKILL.md and the portfolio map."""
+    skill = (SKILL_DIR / "SKILL.md").read_text()
+    portfolio = (SKILL_DIR / "references" / "product-portfolio-map.md").read_text()
+    for name in PRODUCT_REFERENCE_FILES:
+        assert name in skill, f"SKILL.md routing does not mention {name}"
+        assert name in portfolio, f"product-portfolio-map.md does not route to {name}"
+
+
+def test_product_reference_files_have_discovery_questions():
+    """Each product file must carry per-pattern discovery questions (the skill's core output)."""
+    for name in PRODUCT_REFERENCE_FILES:
+        content = (SKILL_DIR / "references" / name).read_text()
+        assert content.count("Discovery questions:") >= 3, \
+            f"{name} should have discovery questions for multiple use-case patterns"
+
+
+def test_product_reference_files_document_gaps():
+    """The honest-capability contract: every product file must document gaps to acknowledge."""
+    for name in PRODUCT_REFERENCE_FILES:
+        content = (SKILL_DIR / "references" / name).read_text()
+        assert "Gaps to Acknowledge" in content, \
+            f"{name} missing the 'Gaps to Acknowledge' subsection (honesty contract)"

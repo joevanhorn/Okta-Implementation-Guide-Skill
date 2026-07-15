@@ -15,6 +15,7 @@ TEST_MODULES = [
     "test_url_patterns",
     "test_review_fixtures",
     "test_html_template",
+    "test_evals",
 ]
 
 
