@@ -17,7 +17,13 @@ Give it a use-case requirements document, and it produces a polished implementat
 
 Supports both a **guided mode** (step-by-step interview) and a **direct mode** (dump your doc and get the output).
 
-Includes Okta Identity Governance (OIG) domain knowledge out of the box, with a research protocol for other platforms.
+Includes deep domain knowledge for the full Okta and Auth0 portfolio out of the box — Workforce Identity Cloud (WIC), Identity Governance (OIG), Privileged Access (OPA), Identity Threat Protection (ITP), Device Access, Access Gateway (OAG), Customer Identity Cloud (CIC / Auth0), and Auth0 Fine-Grained Authorization (FGA) — plus a solution-mapping guide that helps you pick the right product(s) for an opportunity, and a research protocol for non-Okta platforms.
+
+## What's New (July 2026)
+
+**Full Okta + Auth0 portfolio coverage.** The skill now ships product-knowledge reference files for the whole portfolio — Workforce Identity Cloud, Identity Governance, Privileged Access, Identity Threat Protection, Device Access, Access Gateway, Customer Identity Cloud (Auth0), and Auth0 Fine-Grained Authorization — not just OIG. Each follows the same honest, gaps-as-discovery-items structure.
+
+**Solution mapping for presales.** A new `product-portfolio-map.md` reference lets the skill map a customer's *needs* to the right product(s) — so you don't have to name the product up front — and supports multi-product guides. Phase 3 gained a portfolio-scoping step that recommends the best-fit product(s) for your confirmation. Framing stays honest: it recommends the right fit and flags where an adjacent product or augmentation is the real answer.
 
 ## What's New (May 2026)
 
@@ -118,8 +124,16 @@ implementation-guide/
     ├── url-verification.md               # URL verification discipline and anti-patterns
     ├── post-generation-review.md         # Phase 5.5 fact-checking procedure
     ├── quality-checklist.md              # Pre-delivery validation checklist + mermaid validator
-    ├── okta-oig-reference.md             # Okta OIG components, patterns, capabilities
-    └── research-protocol.md              # How to research non-Okta platforms
+    ├── product-portfolio-map.md          # Solution mapping: needs -> product(s), multi-product guidance
+    ├── okta-wic-reference.md             # Okta Workforce Identity Cloud (SSO, MFA, FastPass, UD, LCM)
+    ├── okta-oig-reference.md             # Okta Identity Governance components, patterns, capabilities
+    ├── okta-opa-reference.md             # Okta Privileged Access (SSH/RDP, checkout, sudo bundles)
+    ├── okta-itp-reference.md             # Okta Identity Threat Protection (continuous risk, SSF)
+    ├── okta-device-access-reference.md   # Okta Device Access (Desktop MFA, OS login)
+    ├── okta-access-gateway-reference.md  # Okta Access Gateway (legacy on-prem app SSO)
+    ├── auth0-cic-reference.md            # Customer Identity Cloud / Auth0 (CIAM)
+    ├── auth0-fga-reference.md            # Auth0 Fine-Grained Authorization (ReBAC / OpenFGA)
+    └── research-protocol.md              # How to research non-Okta/Auth0 platforms
 tests/
 ├── run_tests.py                          # Test orchestrator (47 tests, stdlib only)
 ├── test_skill_structure.py               # Required files, phases, principles
@@ -140,8 +154,9 @@ The five "Always" reference files (`mermaid-standards`, `document-template`, `ur
 
 ## Contributing
 
-PRs welcome for:
-- Additional platform reference files (SailPoint, Entra, Saviynt, etc.)
+The full Okta and Auth0 portfolio ships in the box. PRs welcome for:
+- Additional **non-Okta** platform reference files (SailPoint, Entra, Saviynt, Ping, etc.)
+- Deeper use-case patterns for the existing Okta/Auth0 product files
 - Mermaid diagram patterns for new use case types
 - Quality checklist improvements
 

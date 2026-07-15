@@ -18,10 +18,18 @@ Read these reference files based on what you need:
 | `references/url-verification.md` | **Always** — required for any URL that ends up in the output |
 | `references/post-generation-review.md` | **Always** — required Phase 5.5 step before delivery |
 | `references/quality-checklist.md` | **Always** — final validation before delivery |
+| `references/product-portfolio-map.md` | When the product is unspecified, "Okta" is ambiguous, or the opportunity spans multiple products — to map needs → product(s) |
+| `references/okta-wic-reference.md` | When the platform is Okta Workforce Identity Cloud (SSO, MFA, FastPass, Universal Directory, LCM) |
 | `references/okta-oig-reference.md` | When the platform is Okta Identity Governance (OIG) |
-| `references/research-protocol.md` | When the platform is NOT Okta, or when filling knowledge gaps |
+| `references/okta-opa-reference.md` | When the platform is Okta Privileged Access (OPA) |
+| `references/okta-itp-reference.md` | When the platform is Okta Identity Threat Protection (ITP) |
+| `references/okta-device-access-reference.md` | When the platform is Okta Device Access (Desktop MFA) |
+| `references/okta-access-gateway-reference.md` | When the platform is Okta Access Gateway (OAG) |
+| `references/auth0-cic-reference.md` | When the platform is Okta Customer Identity Cloud (CIC) / Auth0 |
+| `references/auth0-fga-reference.md` | When the platform is Auth0 Fine-Grained Authorization (FGA) |
+| `references/research-protocol.md` | When the platform is NOT Okta/Auth0, or when filling knowledge gaps |
 
-The five "Always" files together establish the baseline standard. Platform-specific files (`okta-oig-reference.md`, future `sailpoint-reference.md`, etc.) are loaded on demand based on the platform.
+The five "Always" files together establish the baseline standard. Platform-specific files (one per product family, e.g. `okta-wic-reference.md`, `auth0-cic-reference.md`) are loaded on demand based on the product. When the product is unclear or the opportunity spans several products, load `product-portfolio-map.md` first to map the customer's needs to the right product(s). More than one product file may be loaded for a multi-product guide.
 
 ## Detect Mode
 
@@ -46,7 +54,7 @@ Trigger when:
 In direct mode, skip the multi-turn interview, but still ask **one consolidated clarifying message** if any of these critical inputs are missing or ambiguous:
 
 - **Customer name** — required for the document title
-- **Platform / product** — must be unambiguous (e.g., "Okta" could mean WIC or OIG)
+- **Platform / product** — must be unambiguous. "Okta" alone is not specific: it could mean Workforce Identity Cloud (WIC), Identity Governance (OIG), Privileged Access (OPA), Identity Threat Protection (ITP), Device Access, Access Gateway (OAG), or Customer Identity Cloud (CIC / Auth0). If the product is unclear or the requirements span several of these, load `references/product-portfolio-map.md` and recommend the best-fit product(s) for confirmation.
 - **Use cases or topic** — either a use-case document or enough detail to propose use cases
 - **Section groupings** — if not obvious from the input
 
@@ -106,9 +114,17 @@ Wait for confirmation. If changes requested, update and re-confirm.
 
 Ask these questions (in guided mode, one at a time; in direct mode, extract from context and consolidate any clarifications into a single message):
 
-1. **Product / platform** — e.g., Okta Identity Governance, SailPoint, Microsoft Entra
+1. **Product / platform** — e.g., Okta WIC, Okta Identity Governance, Okta Privileged Access, Customer Identity Cloud (Auth0), SailPoint, Microsoft Entra. If the SE has not named a product, or the requirements clearly span more than one, do **portfolio scoping** first (below) before continuing.
 2. **Customer name** — for the document title
 3. **Section groupings** — suggest logical groupings by functional area, then confirm
+
+### Portfolio scoping (when the product is unspecified or spans multiple products)
+
+If the product is ambiguous or the customer's needs cross product boundaries, read `references/product-portfolio-map.md`, use its needs → product matrix to **recommend** the best-fit product(s), and **confirm with the SE** before generating. Example:
+
+> Based on these requirements, this looks like **Okta WIC** (SSO + MFA) plus **OIG** (the access reviews you mentioned). Does that match how you're positioning it, or is a different product in scope?
+
+This is a recommendation aid, not a sales script — recommend the honest best fit and flag needs that a different product, a partner, or augmentation (Okta Workflows / custom integration) would serve better. For a multi-product opportunity, load each relevant product reference file and organize sections by product/domain.
 
 When suggesting groupings, organize by common patterns:
 
@@ -122,9 +138,21 @@ When suggesting groupings, organize by common patterns:
 - Compliance and audit
 - Reporting
 
-After confirming groupings:
-- If the platform is Okta OIG, read `references/okta-oig-reference.md`
-- For other platforms, read `references/research-protocol.md` and search for platform-specific capabilities before generating sections
+After confirming groupings, load the reference file(s) for the confirmed product(s):
+
+| Confirmed product | Read |
+|-------------------|------|
+| Okta Workforce Identity Cloud (SSO/MFA/FastPass/UD/LCM) | `references/okta-wic-reference.md` |
+| Okta Identity Governance (OIG) | `references/okta-oig-reference.md` |
+| Okta Privileged Access (OPA) | `references/okta-opa-reference.md` |
+| Okta Identity Threat Protection (ITP) | `references/okta-itp-reference.md` |
+| Okta Device Access (Desktop MFA) | `references/okta-device-access-reference.md` |
+| Okta Access Gateway (OAG) | `references/okta-access-gateway-reference.md` |
+| Okta Customer Identity Cloud (CIC) / Auth0 | `references/auth0-cic-reference.md` |
+| Auth0 Fine-Grained Authorization (FGA) | `references/auth0-fga-reference.md` |
+| Any other platform (SailPoint, Entra, Ping, etc.) | `references/research-protocol.md`, then search for platform-specific capabilities |
+
+For a multi-product guide, read every relevant file above. Then run the current-state validation below before generating — the reference files are priors, not the source of truth.
 
 ### Validate current platform state (required)
 
@@ -310,3 +338,5 @@ If the user seems stuck or confused:
 6. **Confirm before proceeding** in guided mode — never skip ahead. In direct mode, consolidate clarifications into one message rather than skipping clarification entirely.
 
 7. **Quality over speed.** Phase 5.5 is non-optional. A document with a wrong fact is worse than no document — it damages the customer's trust in everything else.
+
+8. **Right-fit, not one-size.** Map the customer's needs to the best-fit product(s) across the Okta / Auth0 portfolio (see `references/product-portfolio-map.md`), and honestly flag where an adjacent product, a partner, or augmentation (Okta Workflows, custom integration) is the real answer. This is a presales aid, not a sales script — recommending the honest best fit, including "this part isn't a native fit," is what earns the SE credibility. It is the same principle as #1 applied at the product-selection level.

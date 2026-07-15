@@ -58,6 +58,20 @@ If you cannot verify a capability:
 | ForgeRock/Ping Identity | docs.pingidentity.com |
 | MidPoint (Evolveum) | docs.evolveum.com |
 
+## Common CIAM / Customer Identity Platforms and Documentation Roots
+
+Use this table when the opportunity is *customer/consumer* identity (CIAM) rather than workforce. Okta's own CIAM product is Customer Identity Cloud (Auth0) — it has its own reference file (`auth0-cic-reference.md`); the rest below are competitors to research when the customer is comparing.
+
+| Platform | Documentation URL Pattern |
+|----------|--------------------------|
+| Okta Customer Identity Cloud / Auth0 | auth0.com/docs, auth0.com/fga (FGA) |
+| Microsoft Entra External ID (CIAM) | learn.microsoft.com/entra/external-id |
+| Ping Identity (PingOne for Customers) | docs.pingidentity.com |
+| ForgeRock (Ping) | docs.pingidentity.com |
+| AWS Cognito | docs.aws.amazon.com/cognito |
+| Frontegg / Stytch / WorkOS (dev-first CIAM) | docs.frontegg.com, stytch.com/docs, workos.com/docs |
+| Transmit Security | developer.transmitsecurity.com |
+
 ## Mapping Generic Concepts to Platform Terms
 
 Different platforms use different names for the same concepts. When researching, search for BOTH the generic term and common platform-specific terms:

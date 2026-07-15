@@ -1,0 +1,121 @@
+{
+  "_comment": "Behavioral routing evals for the implementation-guide skill. Each scenario is run by a fresh agent that reads SKILL.md (+ referenced files) and returns a routing decision as JSON. See README.md for the run procedure. grade.py scores captured results against the expectations below.",
+  "product_keywords": {
+    "okta-wic-reference.md": ["wic", "workforce identity"],
+    "okta-oig-reference.md": ["oig", "identity governance"],
+    "okta-opa-reference.md": ["opa", "privileged access"],
+    "okta-itp-reference.md": ["itp", "threat protection"],
+    "okta-device-access-reference.md": ["device access", "desktop mfa"],
+    "okta-access-gateway-reference.md": ["access gateway", "oag"],
+    "auth0-cic-reference.md": ["cic", "auth0", "customer identity"],
+    "auth0-fga-reference.md": ["fga", "fine-grained", "fine grained"]
+  },
+  "_adjacencies_comment": "Per the portfolio map's 'Also consider' column: co-loading one of these alongside the expected product is defensible (e.g. OAG needs WIC as the IdP), so the grader does not treat it as a wrong-product error. Cross-domain co-loads still fail.",
+  "adjacencies": {
+    "okta-wic-reference.md": ["okta-oig-reference.md"],
+    "okta-oig-reference.md": ["okta-wic-reference.md"],
+    "okta-opa-reference.md": ["okta-oig-reference.md"],
+    "okta-itp-reference.md": ["okta-wic-reference.md"],
+    "okta-device-access-reference.md": ["okta-wic-reference.md"],
+    "okta-access-gateway-reference.md": ["okta-wic-reference.md"],
+    "auth0-cic-reference.md": ["auth0-fga-reference.md"],
+    "auth0-fga-reference.md": ["auth0-cic-reference.md"]
+  },
+  "scenarios": [
+    {
+      "id": "wic-sso",
+      "prompt": "Generate an implementation guide. Platform: Okta WIC. Customer: Acme Corp. Use cases: SSO to Salesforce and Workday, adaptive MFA at login, self-service password reset.",
+      "expected_products": ["okta-wic-reference.md"],
+      "multi_product": false,
+      "clarification_expected": false,
+      "required_flag_groups": []
+    },
+    {
+      "id": "ciam-unspecified",
+      "prompt": "We're launching a consumer mobile app and need to handle user login: social sign-in with Google and Apple, self-service signup, and support for business partners logging in under their own organizations. Help me build an implementation guide.",
+      "expected_products": ["auth0-cic-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "opa-privileged",
+      "prompt": "We need to secure privileged administrator access to our fleet of Linux and Windows servers (SSH and RDP), including checkout of shared local admin passwords and sudo command control. Build a guide.",
+      "expected_products": ["okta-opa-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "itp-threat",
+      "prompt": "When our EDR (CrowdStrike) flags a device as compromised, we want Okta to automatically terminate that user's active sessions and force re-authentication. Create an implementation guide.",
+      "expected_products": ["okta-itp-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "okta-ambiguous",
+      "prompt": "Can you put together an implementation guide for Okta for our company?",
+      "expected_products": [],
+      "multi_product": false,
+      "clarification_expected": true,
+      "required_flag_groups": []
+    },
+    {
+      "id": "multiproduct",
+      "prompt": "We want three things: employees single-signing-on into all our SaaS apps, privileged access to production servers brokered securely with no standing credentials, and quarterly access review campaigns for our SOX auditors. Build one implementation guide covering all of it.",
+      "expected_products": ["okta-wic-reference.md", "okta-opa-reference.md", "okta-oig-reference.md"],
+      "multi_product": true,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "honest-opa-cyberark",
+      "prompt": "We're ripping out CyberArk. I need the guide to confirm that Okta Privileged Access fully replaces it across everything: our IBM mainframe, network switches and routers, and database privileged accounts. Platform: Okta Privileged Access.",
+      "expected_products": ["okta-opa-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": [
+        ["mainframe"],
+        ["network", "switch", "router"],
+        ["database", "db"]
+      ]
+    },
+    {
+      "id": "fga-inapp",
+      "prompt": "Inside our SaaS product we need Google-Drive-style sharing permissions: controlling exactly which users can view or edit each document, with nested folders that inherit access. Build an implementation guide for this authorization model.",
+      "expected_products": ["auth0-fga-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "auth0-currency",
+      "prompt": "Our Auth0 tenant currently uses Rules and Hooks for our post-login logic and custom claims. Document our current authentication setup in an implementation guide.",
+      "expected_products": ["auth0-cic-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": [
+        ["actions"],
+        ["2026", "sunset", "deprecat", "legacy", "end-of-life", "stop executing"]
+      ]
+    },
+    {
+      "id": "device-access",
+      "prompt": "We want employees to authenticate with Okta right at the Windows and macOS login screen, including when their laptop is offline. Build an implementation guide.",
+      "expected_products": ["okta-device-access-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    },
+    {
+      "id": "oag-legacy",
+      "prompt": "We have several old on-prem web apps that only support header-based authentication and Kerberos (they can't do SAML or OIDC). We want to put Okta SSO and MFA in front of them. Build an implementation guide.",
+      "expected_products": ["okta-access-gateway-reference.md"],
+      "multi_product": false,
+      "clarification_expected": null,
+      "required_flag_groups": []
+    }
+  ]
+}

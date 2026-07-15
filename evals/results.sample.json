@@ -1,0 +1,72 @@
+{
+  "_comment": "Captured routing decisions from a run of the eval agents (see README.md). This is the reference/sample run: 10/10 pass. Overwrite (or copy to results.json) with fresh agent outputs to re-grade after changing the skill.",
+  "run_label": "2026-07-15 baseline (Sonnet actors)",
+  "results": {
+    "wic-sso": {
+      "reference_files": ["okta-wic-reference.md"],
+      "will_ask_clarification": false,
+      "recommended_products": ["Okta Workforce Identity Cloud (WIC)"],
+      "notable_flags": ""
+    },
+    "ciam-unspecified": {
+      "reference_files": ["product-portfolio-map.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Customer Identity Cloud (CIC) / Auth0"],
+      "notable_flags": "Product never named; per Phase 3 portfolio-scoping, portfolio map is read first and CIC/Auth0 is a recommendation pending SE confirmation before auth0-cic-reference.md is loaded. Social sign-in + consumer signup + B2B partner orgs map to CIC (Universal Login + social connections + Organizations); single-product, not multi-product. FGA not recommended (no in-app resource-permission need stated)."
+    },
+    "opa-privileged": {
+      "reference_files": ["product-portfolio-map.md", "okta-opa-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Privileged Access (OPA)"],
+      "notable_flags": "Product not explicitly named; SSH/RDP server access, shared local admin password checkout, and sudo command control map cleanly to OPA per the needs->product matrix. Portfolio map loaded to confirm the recommendation and customer name before generating."
+    },
+    "itp-threat": {
+      "reference_files": ["product-portfolio-map.md", "okta-itp-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Identity Threat Protection (ITP)", "Okta Workforce Identity Cloud (WIC)"],
+      "notable_flags": "Maps to matrix row 'detect compromised sessions, respond after login, EDR/security-signal sharing' -> ITP primary, WIC as base dependency. Automatic termination + forced re-auth from CrowdStrike depends on Shared Signals Framework (SSF)/Universal Logout and CrowdStrike being a supported SSF transmitter; must be validated in Phase 3. If not native, honestly note Workflows/custom bridge may be required rather than presenting as out-of-the-box."
+    },
+    "okta-ambiguous": {
+      "reference_files": ["product-portfolio-map.md"],
+      "will_ask_clarification": true,
+      "recommended_products": [],
+      "notable_flags": "Maximally underspecified: 'Okta' alone is ambiguous (WIC/OIG/OPA/ITP/Device Access/OAG/Auth0-CIC), no use cases or topic provided, no real customer name. No stated needs to run the needs->product matrix, so no product can be honestly recommended yet; portfolio map loaded only to frame the disambiguation question."
+    },
+    "multiproduct": {
+      "reference_files": ["product-portfolio-map.md", "okta-wic-reference.md", "okta-oig-reference.md", "okta-opa-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Workforce Identity Cloud (WIC)", "Okta Identity Governance (OIG)", "Okta Privileged Access (OPA)"],
+      "notable_flags": "No product named; request spans three domains (SSO=WIC, ephemeral privileged server access=OPA, quarterly SOX access-review campaigns=OIG). Load portfolio map, recommend WIC+OIG+OPA, confirm, then generate one combined guide organized by product/domain (not blurred). Validate 'no standing credentials' against OPA's actual ephemeral-credential/checkout mechanics."
+    },
+    "honest-opa-cyberark": {
+      "reference_files": ["okta-opa-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Privileged Access (OPA)"],
+      "notable_flags": "The request to 'confirm' OPA fully replaces CyberArk across IBM mainframe, network switches/routers, and database privileged accounts cannot be honestly confirmed. OPA native coverage is server-centric (Linux/Windows via Server Agent + AD accounts); mainframe (no native 3270/TN3270 connector), network device CLI sessions (switches/routers), and database-native privileged session brokering/vaulting are comparatively limited vs dedicated PAM tools. Per 'Honest, not impressive', surface these as discovery items/gaps rather than asserting 1:1 CyberArk parity."
+    },
+    "fga-inapp": {
+      "reference_files": ["product-portfolio-map.md", "auth0-fga-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Auth0 Fine-Grained Authorization (FGA)"],
+      "notable_flags": "Product not named; in-app view/edit permissions on documents with nested-folder inheritance ('Google-Drive-style sharing') maps to the matrix row for in-app fine-grained authorization -> Auth0 FGA (ReBAC/OpenFGA). This is NOT an OIG or WIC fit; must not substitute OIG despite surface-level 'access control' language. CIC would only be a secondary product if end-user authentication were also needed (not stated)."
+    },
+    "auth0-currency": {
+      "reference_files": ["auth0-cic-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Customer Identity Cloud (CIC) / Auth0"],
+      "notable_flags": "Rules and Hooks are the legacy pre-Actions extensibility model: closed to new tenants/edits as of November 18, 2024, and Auth0 stops executing them entirely after November 18, 2026. Flag as a migration item to Actions during discovery; document the current Rules/Hooks setup honestly but call out the sunset date and recommend an Actions migration path rather than presenting Rules/Hooks as the go-forward architecture."
+    },
+    "device-access": {
+      "reference_files": ["product-portfolio-map.md", "okta-device-access-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Device Access"],
+      "notable_flags": "'Okta' alone is ambiguous, so even though MFA at Windows/macOS login maps cleanly to Device Access, the skill recommends and confirms before generating. Validate the 'offline login screen authentication' claim against current Device Access docs (cached/offline mechanics, max offline days, supported OS versions). WIC is typically the underlying identity source for Device Access enrollment."
+    },
+    "oag-legacy": {
+      "reference_files": ["product-portfolio-map.md", "okta-access-gateway-reference.md", "okta-wic-reference.md"],
+      "will_ask_clarification": true,
+      "recommended_products": ["Okta Access Gateway (OAG)", "Okta Workforce Identity Cloud (WIC)"],
+      "notable_flags": "'Okta SSO and MFA' without a named product; header-based auth / Kerberos legacy web apps that can't do SAML/OIDC map to the portfolio matrix OAG row (primary: OAG, also consider: WIC). Recommend OAG as primary (it proxies/injects headers and negotiates Kerberos to front legacy apps) with WIC as the underlying identity/MFA policy layer, and confirm before generating rather than assuming plain WIC SSO can front these apps."
+    }
+  }
+}
